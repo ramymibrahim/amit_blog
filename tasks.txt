@@ -1,0 +1,33 @@
+index.php?cat_id=1&limit=10&page=2&keywords=abo+treka
+
+Gemy:
+تعديل إسم الموقع الى Amit Blog  + الرابط
+
+AlSayed:
+بعد ال Home 
+إضافة Categories ك Dropdown list من ال Array  Categories في الheader
+
+Eng. Ahmed Soliman
+إحضار البيانات من قاعدة البيانات لل Categories
+
+AbdAllah
+عرض ال posts في الصفحة الرئيسية
+
+Yasser + Maher + Ayman
+عمل ال SQL Statement لل posts   
+    join
+    order by created_date desc
+    category
+    keywords
+    limit
+    page number
+
+Mahmoud
+pagination
+
+Kerolos
+index.php?cat_id=1&limit=10&page=2&keywords=abo+treka
+
+
+Front End
+post.php?id=1
