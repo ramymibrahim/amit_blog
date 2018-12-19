@@ -1,5 +1,4 @@
 index.php?cat_id=1&limit=10&page=2&keywords=abo+treka
-]
 Gemy:
 تعديل إسم الموقع الى Amit Blog  + الرابط
 
@@ -13,6 +12,9 @@ Eng. Ahmed Soliman
 AbdAllah
 عرض ال posts في الصفحة الرئيسية
 
+Kerolos
+index.php?cat_id=1&limit=10&page=2&keywords=abo+treka
+
 Yasser + Maher + Ayman
 عمل ال SQL Statement لل posts   
     join
@@ -25,9 +27,8 @@ Yasser + Maher + Ayman
 Mahmoud
 pagination
 
-Kerolos
-index.php?cat_id=1&limit=10&page=2&keywords=abo+treka
-
+[Not Done]
+Bootstrap Pagination
 
 FrontEnd & BackEnd
 post.php?id=1

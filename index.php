@@ -1,5 +1,8 @@
 <?php
+require_once('helper/config.php');
 require_once('layouts/header.php');
+require_once('helper/params.php');
+require_once('helper/posts.php');
 ?>
   <!-- Page Header -->
   <header class="masthead" style="background-image: url('img/home-bg.jpg')">
@@ -8,48 +11,65 @@ require_once('layouts/header.php');
         <div class="row">
           <div class="col-lg-8 col-md-10 mx-auto">
             <div class="site-heading">
-              <h1>Clean Blog</h1>
-              
+              <h1><?php echo getCategoryName($categories,$cat_id);?></h1>
             </div>
           </div>
         </div>
       </div>
     </header>
 	
-
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
 
 <!-- -->		
 <?php
-$posts=[];
-for($i=0;$i<count($posts);$i++){
-?>
-	<div class='post-preview'>
-		<a href='post.html'>
-			<h2 class='post-title'></h2>
-			<h3 class='post-subtitle'></h3>
+$posts=getPosts($cat_id,$limit,$page,$keywords);
+
+foreach($posts as $post)
+{
+  ?>
+<div class='post-preview'>
+		<a href='<?php echo $base_url.'/pages/post.php?id='.$post['id'];?>'>
+			<h2 class='post-title'><?php echo $post['title']?></h2>
+			<h3 class='post-subtitle'><?php echo getContentForHome($post['content'])?></h3>
         </a>
-		<?php
-		if(!empty($posts[$i]['author'])){
-			?>
-			<p class='post-meta'>Posted by <a href='#'>
-		<?php echo $posts[$i]['author'];?></a>
-             on <?php $posts[$i]['created_at'];?>
-		</p>
-			<?php
-		}
-		?>
-    </div>
+        <p class='post-meta'> 
+        <a href='<?php echo $base_url.'/pages/author.php?id='.$post['user_id'];?>'>
+        <?php echo 'Posted by '.$post['user_name'].' on '.$post['created_at'];?>
+        </a>
+        </p>
+        </div>
     <hr>
-	<?php
+  <?php
 }
 ?>
           
           <!-- Pager -->
           <div class="clearfix">
-            <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+ <?php
+ $totalCount=getCount($cat_id,$keywords);
+ $pageCount = intval(($totalCount-1)/$limit) + 1;
+ if($page>1){
+  $href=getHref($cat_id,$limit,1,$keywords);
+  echo "<a href='$base_url/$href'>&lt;&lt; </a> ";
+  $href=getHref($cat_id,$limit,$page-1,$keywords);
+  echo "<a href='$base_url/$href'>&lt; </a> ";
+ }
+ for($i=1;$i<=$pageCount;$i++){
+   $href=getHref($cat_id,$limit,$i,$keywords);
+   if($page==$i)
+    echo $i.' ';
+    else
+   echo "<a href='$base_url/$href'>$i</a> ";
+ }
+ if($page<$pageCount){
+  $href=getHref($cat_id,$limit,$page+1,$keywords);
+  echo "<a href='$base_url/$href'>&gt; </a> ";
+  $href=getHref($cat_id,$limit,$pageCount,$keywords);
+  echo "<a href='$base_url/$href'>&gt;&gt; </a> ";
+ } 
+ ?>
           </div>
         </div>
       </div>

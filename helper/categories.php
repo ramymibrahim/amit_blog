@@ -1,12 +1,16 @@
 <?php
-function getCategories(){
+require_once($base_dir.'helper/database.php');
 
-    //Replace hardcoded with DB operation
-    //Eng. Ahmed Soliman
-    $categories=[
-        ['id'=>1,'name'=>'Sports'],
-        ['id'=>2,'name'=>'Politics'],
-        ['id'=>3,'name'=>'News'],
-    ];
+function getCategories(){
+    $categories = getRows("select * from categories");    
     return $categories;
+}
+
+function getCategoryName($categories,$id){
+    foreach($categories as $cat){
+        if($cat['id']==$id){
+            return $cat['name'];
+        }
+    }
+    return "Amit Blog";
 }
