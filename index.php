@@ -47,29 +47,46 @@ foreach($posts as $post)
           
           <!-- Pager -->
           <div class="clearfix">
- <?php
- $totalCount=getCount($cat_id,$keywords);
- $pageCount = intval(($totalCount-1)/$limit) + 1;
- if($page>1){
-  $href=getHref($cat_id,$limit,1,$keywords);
-  echo "<a href='$base_url/$href'>&lt;&lt; </a> ";
-  $href=getHref($cat_id,$limit,$page-1,$keywords);
-  echo "<a href='$base_url/$href'>&lt; </a> ";
- }
- for($i=1;$i<=$pageCount;$i++){
-   $href=getHref($cat_id,$limit,$i,$keywords);
-   if($page==$i)
-    echo $i.' ';
-    else
-   echo "<a href='$base_url/$href'>$i</a> ";
- }
- if($page<$pageCount){
-  $href=getHref($cat_id,$limit,$page+1,$keywords);
-  echo "<a href='$base_url/$href'>&gt; </a> ";
-  $href=getHref($cat_id,$limit,$pageCount,$keywords);
-  echo "<a href='$base_url/$href'>&gt;&gt; </a> ";
- } 
- ?>
+
+<nav aria-label="Page navigation example"class="d-flex justify-content-center ">
+              <ul class="pagination pagination-circle bg-primary">
+            <?php
+            $totalCount=getCount($cat_id,$keywords);
+            $pageCount = intval(($totalCount-1)/$limit) + 1;
+            if($page>1){
+              $href=getHref($cat_id,$limit,1,$keywords);
+              echo "<li class='page-item'><a class='page-link' href='$base_url/$href'>First</a></li>";
+              $href=getHref($cat_id,$limit,$page-1,$keywords);
+              echo "<li class='page-item '>
+              <a class='page-link' aria-label='Previous' href='$base_url/$href'>
+                <span aria-hidden='true'>&laquo;</span>
+                <span class='sr-only'>Previous</span>
+              </a>
+            </li>";
+            }
+            for($i=1;$i<=$pageCount;$i++){
+              $href=getHref($cat_id,$limit,$i,$keywords);
+              if($page==$i)
+                echo "<li class='page-item active'><a class='page-link '>$i</a></li>";
+                else
+              echo "<li class='page-item'><a class='page-link' href='$base_url/$href'>$i</a></li> ";
+            }
+            if($page<$pageCount){
+              $href=getHref($cat_id,$limit,$page+1,$keywords);
+              echo "<li class='page-item'>
+              <a class='page-link' aria-label='Next'  href='$base_url/$href'>
+                <span aria-hidden='true'>&raquo;</span>
+                <span class='sr-only'>Next</span>
+              </a>
+            </li>";
+              $href=getHref($cat_id,$limit,$pageCount,$keywords);
+              echo "<li class='page-item'><a class='page-link' href='$base_url/$href' >Last</a></li>";
+            } 
+            ?>
+
+             </ul>
+            </nav>
+
           </div>
         </div>
       </div>

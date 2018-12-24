@@ -1,4 +1,5 @@
 <?php
+require_once($base_dir.'helper/database.php');
 function getPosts($cat_id=0,$limit=10,$page=1,$condition=''){
     $query = "
     SELECT posts.*,users.name as user_name,categories.name as category_name
@@ -38,31 +39,20 @@ function getCount($cat_id=0,$condition=''){
     return $count;
 }
 function getPost($id){
-    $post=[
-        'id'=>1,
-        'title'=>'Title1',
-        'content'=>'Title1 Title1 Title1',
-        'user_id'=>1,
-        'user_name'=>'Ayman',
-        'comments'=>[
-            [
-                'id'=>1,
-                'content'=>'adasdasd',
-                'user_id'=>1,
-                'user_name'=>'Ayman',
-                'picture'=>'ayman.jpg',
-                'created_at'=>'2018-10-10 12:11:12 am'
-            ],
-            [
-                'id'=>2,
-                'content'=>'adasdasd',
-                'user_id'=>1,
-                'user_name'=>'Ayman',
-                'picture'=>'ayman.jpg',
-                'created_at'=>'2018-10-10 12:11:12 am'
-            ]
-        ]
-    ];
+    $query= "
+    SELECT posts.*,categories.name as category_name,users.name as user_name 
+    from posts
+    INNER JOIN categories on categories.id=posts.category_id
+    INNER JOIN users on users.id=posts.user_id
+    WHERE  posts.id = $id and is_active=1;";
+    $post = getRow($query);
+    if(!$post)
+        return null;
+    $query="
+    SELECT comments.*,users.name,users.picture FROM comments
+    INNER join users on users.id=comments.user_id
+    WHERE comments.post_id=$id order by created_at desc";
+    $post['comments']=getRows($query);
     return $post;
 }
 
