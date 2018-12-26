@@ -1,5 +1,11 @@
 <?php
 require_once($base_dir.'helper/database.php');
+function getAdminPosts(){
+    $query="SELECT posts.*,users.name as user_name,categories.name as category_name
+    FROM posts LEFT JOIN users ON users.id=posts.user_id 
+    LEFT JOIN categories  on categories.id=posts.category_id ORDER BY posts.created_at desc";
+    return getRows($query);
+}
 function getPosts($cat_id=0,$limit=10,$page=1,$condition=''){
     $query = "
     SELECT posts.*,users.name as user_name,categories.name as category_name
@@ -69,4 +75,14 @@ function getContentForHome($content){
 function getHref($cat_id,$limit,$page,$condition){
     $params = "index.php?&cat_id=$cat_id&limit=$limit&page=$page&condition=$condition";
     return $params;
+}
+
+function setNotActivePost($id){
+    return executeNonQuery("UPDATE posts set is_active=0 where id=$id");
+}
+function setActivePost($id){
+    return executeNonQuery("UPDATE posts set is_active=1 where id=$id");
+}
+function deletePost($id){
+    return executeNonQuery("DELETE FROM posts where id=$id");
 }
