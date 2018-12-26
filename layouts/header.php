@@ -74,7 +74,30 @@ $categories=getCategories();
             <?php
               }
             ?>
-
+<?php
+if($loggedIn && $user['is_admin']){
+?>
+<li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">        
+              <a class='dropdown-item' href='<?php echo $base_url?>/admin/users.php'>Users</a>
+              <a class='dropdown-item' href='<?php echo $base_url?>/admin/categories.php'>Categories</a>
+              <a class='dropdown-item' href='<?php echo $base_url?>/admin/posts.php'>Posts</a>
+            </div>
+          </li> 
+            <?php }?>
+<?php
+if($loggedIn && $user['is_author']){
+?>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Author</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">              
+              <a class='dropdown-item' href='<?php echo $base_url?>/admin/posts.php?myposts=1'>Posts</a>
+            </div>
+          </li> 
+          <?php
+}
+?>
           </ul>
         </div>
       </div>

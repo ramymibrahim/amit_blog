@@ -20,11 +20,11 @@ function getRow($q){
     return $row;
 }
 
-function executeQuery($q){
+function executeNonQuery($q){
     $con = mysqli_connect("localhost","blog_user","blog_user123","amit_blog");
     mysqli_set_charset($con,"utf8");
-    $query = mysqli_query($con,$q);    
-    mysqli_close($con);
+    $query = mysqli_query($con,$q);
+    mysqli_close($con);    
     return $query;
 }
     

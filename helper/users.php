@@ -21,28 +21,62 @@ function login($username,$password){
     return false;
 }
 
-function register($post,$files){
+function register($username,$password,$confirm_password,$name,$picture){
+    
     $base_dir = $_SERVER["DOCUMENT_ROOT"].'/amit_blog/';
-    if($post['password']!=$post['confirm_password']){
+    if($password!=$confirm_password){
         return 'Invalid password!';
     }
-    if($files['picture']['type']!='image/png' && $files['picture']['type']!='image/jpg'){
+    if($picture['type']!='image/png' && $picture['type']!='image/jpg' && $picture['type']!='image/jpeg'){
         return 'Invalid File Type!';
-    }
-    $uploaded = move_uploaded_file($files['picture']['tmp_name'],$base_dir.'img/'.$files['picture']['name']);
+    }    
+    $farr = explode(".",$picture['name']);        
+    $ext = ".".$farr[count($farr)-1];
+    $picture_name='img/'.$username.date("U").(microtime(true)*10000).$ext;        
+    $uploaded = move_uploaded_file($picture['tmp_name'],$base_dir.$picture_name);
     if(!$uploaded){
         return 'Error while  uploading!';
-    }
-    $username = $post['username'];
-    $password = $post['password'];
-    $name = $post['name'];
-    $picture = 'img/'.$files['picture']['name'];
-    $password = hashStr($username,$password);
+    }    
+    $hashed_password = hashStr($username,$password);
+    
     $query="
     INSERT INTO users(id,username,password,name,picture,is_author,is_admin)
-    values (null,'$username','$password','$name','$picture',0,0)
-    ";
-    executeQuery($query);
+    values (null,'$username','$hashed_password','$name','$picture_name',0,0)
+    ";    
+    if(!executeNonQuery($query)){
+        return 'Error while registration, please try again later!';
+    }
+    $login= login($username,$password);
+    if($login){        
+        header('Location: ../index.php');
+        die();
+    }
 }
 
+function getUsers(){
+    $query="
+        SELECT id,UserName,Name,is_author,is_admin from users;
+    ";
+    return getRows($query);
+}
+
+function delete($id){
+    return executeNonQuery("delete from users where id=$id");
+}
+
+function setAdmin($id){
+    return executeNonQuery("update users set is_admin=1 where id=$id");
+}
+
+function setNotAdmin($id){
+    return executeNonQuery("update users set is_admin=0 where id=$id");
+}
+
+function setAuthor($id){
+    return executeNonQuery("update users set is_author=1 where id=$id");
+}
+
+function setNotAuthor($id){
+    return executeNonQuery("update users set is_author=0 where id=$id");
+}
 ?>

@@ -8,8 +8,10 @@ if(
   isset($_POST['confirm_password']) &&
   isset($_POST['name']) &&
   isset($_FILES['picture'])
-  ){
-    $error = register($_POST,$_FILES);
+  ){    
+    $error = register(
+      $_POST['username'],$_POST['password']
+      ,$_POST['confirm_password'],$_POST['name'],$_FILES['picture']);
   }
 ?>
 
@@ -34,18 +36,16 @@ if(
             <input type = "text" name="username" class="form-control" placeholder="User Name"/>
             <input type = "password" name="password" class="form-control" placeholder="Password"/>
             <input type = "password" name="confirm_password" class="form-control" placeholder="Confirm Password"/>
-            <input type = "text" name="name" class="form-control" placeholder="User Name"/>
+            <input type = "text" name="name" class="form-control" placeholder="Name"/>
             <label>Please select your favorite picture</label>
             <input type="file" name="picture">
             <button type="sumbit" class="btn btn-success">Register</button>
             </form>
             <?php             
-            if(isset($login)){                
-                if(!$login){                    
+            if(isset($error)){                                               
                     ?>
-                    <div class="text-danger">Invalid username or password</div>
+                    <div class="text-danger"><?php echo $error;?></div>
                     <?php
-                }
             }
             ?>
         </div>
