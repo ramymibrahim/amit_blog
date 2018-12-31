@@ -3,6 +3,9 @@ require_once('../helper/config.php');
 require_once('../helper/posts.php');
 if(isset($_GET['id'])){
     $id=$_GET['id'];
+    if(isset($_POST['content'])){
+        addComment($id,$_POST['content']);
+    }
     $post = getPost($id);
     if($post==null){
         header("Location: $base_url/index.php");
@@ -72,6 +75,28 @@ require_once($base_dir.'layouts/header.php');
     }    
     ?>
     </div>
+
+    
+<?php
+if(isset($user)){
+    ?>
+        <div class="col-12">
+                            <div class="widget-area no-padding blank">
+                                <div class="status-upload">
+                                    <form action="post.php?id=<?php echo $id;?>" method="POST">
+                                        <div class="form-group">
+                                          <textarea type="text" class="form-control" name="content" placeholder=" leave a comment "></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-success green"><i class="fa fa-share"></i> Comment</button>
+                                    </form>
+                                </div><!-- Status Upload  -->
+                            </div><!-- Widget Area -->
+                        </div>
+        
+    </div>
+    <?php
+}
+?>
 </div>
 <?php
 require_once($base_dir.'layouts/footer.php');

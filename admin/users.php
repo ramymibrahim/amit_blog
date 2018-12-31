@@ -30,6 +30,16 @@ if(isset($_GET['action']) && isset($_GET['id'])){
             $alert = "Error while Action";
         }
     }
+    elseif($_GET['action']=='setnotactive'){
+        if(!setNotActive($id)){
+            $alert = "Error while Action";
+        }
+    }
+    elseif($_GET['action']=='setactive'){
+        if(!setActive($id)){
+            $alert = "Error while Action";
+        }
+    }
 }
 $users=getUsers();
 require_once($base_dir.'layouts/header.php');
@@ -63,7 +73,7 @@ require_once($base_dir.'layouts/header.php');
                             <th>Id</th>
                             <th>UserName</th>
                             <th>Name</th>
-                            <th colspan="3">Actions</th>                        
+                            <th colspan="4">Actions</th>                        
                         </tr>
                     </thead>
                     <tbody>
@@ -106,11 +116,24 @@ require_once($base_dir.'layouts/header.php');
                         <td width="50px"><a href="users.php?action=setadmin&id=<?php echo $user['id'];?>" class="btn btn-primary">Set Admin</a></td>
                         <?php
                         }
-                        ?>                                            
+                        ?> 
+                          <?php
+                        if($user['is_active']){
+                        ?>
+                            <td width="50px"><a href="users.php?action=setnotactive&id=<?php echo $user['id'];?>" class="btn btn-primary">Set Not Active</a></td>
+                        <?php
+                        }
+                        else{
+                            ?>
+                            <td width="50px"><a href="users.php?action=setactive&id=<?php echo $user['id'];?>" class="btn btn-primary">Set Active</a></td>
+                            <?php
+                        }
+                        ?>                                           
                         </tr>
                         <?php
                     }
                     ?>
+
                     </tbody>
                 </table>
             </div>

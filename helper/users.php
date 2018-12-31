@@ -10,7 +10,7 @@ function hashStr($username,$password){
 }
 
 function login($username,$password){
-    $query = "select users.* from users where username='$username'";
+    $query = "select users.* from users where username='$username' and is_active=1";
     $user = getRow($query);    
     if($user){ 
         if($user['password']==hashStr($username,$password)){  
@@ -40,8 +40,8 @@ function register($username,$password,$confirm_password,$name,$picture){
     $hashed_password = hashStr($username,$password);
     
     $query="
-    INSERT INTO users(id,username,password,name,picture,is_author,is_admin)
-    values (null,'$username','$hashed_password','$name','$picture_name',0,0)
+    INSERT INTO users(id,username,password,name,picture,is_author,is_admin,is_active)
+    values (null,'$username','$hashed_password','$name','$picture_name',0,0,1)
     ";    
     if(!executeNonQuery($query)){
         return 'Error while registration, please try again later!';
@@ -55,7 +55,7 @@ function register($username,$password,$confirm_password,$name,$picture){
 
 function getUsers(){
     $query="
-        SELECT id,UserName,Name,is_author,is_admin from users;
+        SELECT id,UserName,Name,is_author,is_admin,is_active from users;
     ";
     return getRows($query);
 }
@@ -79,4 +79,36 @@ function setAuthor($id){
 function setNotAuthor($id){
     return executeNonQuery("update users set is_author=0 where id=$id");
 }
+function setActive($id){
+    return executeNonQuery("update users set is_active=1 where id=$id");
+}
+
+function setNotActive($id){
+    return executeNonQuery("update users set is_active=0 where id=$id");
+}
+
+function getAuthor($id){
+    $query="
+        SELECT UserName,Name,picture from users where id=$id and is_active=1 and is_author=1;
+    ";
+    return getRow($query);
+}
+
+function getCountPosts($id){
+    $query="
+    SELECT COUNT(0) FROM posts WHERE is_active=1 AND user_id=$id;
+    ";
+    return getRow($query);
+}
+
+function getCountComments($id){
+    $query="
+    SELECT COUNT(0) FROM comments inner JOIN posts on posts.id=comments.post_id WHERE posts.is_active=1 and comments.user_id=$id;
+    ";
+    return getRow($query);
+}
+
+
+
+
 ?>
